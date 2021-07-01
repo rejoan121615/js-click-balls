@@ -128,8 +128,6 @@ const ParentCreator = (data) => {
     let parent = document.createElement("div");
     parent.id = "parent";
     document.querySelector(".container").appendChild(parent);
-    // let parent = document.querySelector("#parent");
-    // if undefine
     if (!data) {
         return;
     }
@@ -198,9 +196,6 @@ const regularParentGenerator = (data) => {
     let parent = document.createElement("div");
     parent.id = "parent";
     document.querySelector(".container").appendChild(parent);
-    // add text
-    // store new data to snap shot
-
     // check if it's exist
     if (data.hasOwnProperty("text")) {
         let createHeading = document.createElement("h4");
@@ -310,28 +305,6 @@ const regularParentGenerator = (data) => {
     return parent;
 };
 
-// backward parent datasnap
-
-// --------------------------------- execute backwards ----------------------------------------
-function executeBackward() {
-    // regularParentGenerator(clickDataSnapshot[snapShotCounter]);
-    // console.log(data);
-    // --snapShotCounter;
-    // if (snapShotCounter <= 0) {
-    //     snapShotCounter = 0
-    // }
-    // console.log('hello rejoan')
-    // if ( mydatabase == clickDataSnapshot[snapShotCounter]) {
-    //     console.log('mydatabase');
-    //     console.log('click snap', clickDataSnapshot);
-    // } else {
-    //     regularParentGenerator(clickDataSnapshot[snapShotCounter]);
-    //     dataBaseExecutor(clickDataSnapshot[snapShotCounter].data);
-    //     console.log(clickDataSnapshot[snapShotCounter]);
-    //     console.log(snapShotCounter)
-    // }
-}
-
 //------------------------------------------------------ data executor -------------------------------------------------------------
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
@@ -357,4 +330,10 @@ const dataBaseExecutor = (dataArrray) => {
 do {
     clickDataSnapshot[snapShotCounter] = mydatabase;
     let another = ParentCreator(mydatabase);
+    gsap.from(another, {
+        rotateY: '360deg',
+        scale: 0,
+        duration: 1.3,
+        delay: 0.2
+    })
 } while (false);
