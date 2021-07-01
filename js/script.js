@@ -18,35 +18,28 @@ const DivCreator = (data) => {
     div.classList.add("item");
     // bind event
     div.addEventListener("click", (e) => {
+        // data stroge
+        snapShotCounter++;
+        clickDataSnapshot[snapShotCounter] = data;
+        // data stroage
         const tl = gsap.timeline();
         tl.to(gsap.utils.toArray("#main .item"), {
             left: 0,
             top: 0,
             opacity: 0,
             duration: 1,
-        }).to("#parent", {
-            scale: 0.9,
-            duration: 0.5,
-            onComplete: function (e) {
-                // store current data
-                clickDataSnapshot[snapShotCounter] = data;
+            onComplete: function () {
                 // store click data
-                document.querySelector("#parent").remove();
+                removeOldElement();
                 regularParentGenerator(data);
-                // remove all child
-                document
-                    .querySelectorAll("#main .item")
-                    .forEach((item, index) => {
-                        item.remove();
-                    });
-                // create new element
                 dataBaseExecutor(data.data);
+                //----------------------------- animation for list ----------------------------
                 if (data.type == "list") {
                     gsap.from("#main .item", {
                         top: 0,
                         left: 0,
                         opacity: 0,
-                        duration: 1,
+                        duration: 0.4,
                     });
                 } else if (data.type == "text") {
                     const timeline = gsap.timeline();
@@ -54,16 +47,18 @@ const DivCreator = (data) => {
                     gsap.from(element[1], {
                         y: 150,
                         opacity: 0,
-                        duration: 1,
+                        duration: 0.4,
                     });
-                    gsap.from(element[0], {
-                        y: -150,
-                        opacity: 0,
-                        duration: 1,
-                    });
+                    gsap.from(
+                        element[0],
+                        {
+                            y: -150,
+                            opacity: 0,
+                            duration: 0.4,
+                        },
+                        "<"
+                    );
                 }
-
-                // }
             },
         });
     });
@@ -102,6 +97,15 @@ const DivCreator = (data) => {
     div.classList.add(data.size);
     return div;
 };
+
+// ------------------------------------------ generate regular parent --------------------------------
+function removeOldElement(data) {
+    document.querySelector("#parent").remove();
+    // remove all child
+    document.querySelectorAll("#main .item").forEach((item, index) => {
+        item.remove();
+    });
+}
 // ------------------------------------------------ last node creator -------------------------------------------
 const NodeDescriptionCreator = (texts) => {
     // create div
@@ -154,13 +158,12 @@ const ParentCreator = (data) => {
     // click event
     parent.addEventListener("click", (e) => {
         // ------------------------------------ gsap animation initialized --------------------------------------
+
         // add border animation class
         parent.classList.toggle("animate");
         // execute data
         if (data == clickDataSnapshot[snapShotCounter]) {
             dataBaseExecutor(data.data);
-            clickDataSnapshot[snapShotCounter] = data;
-            snapShotCounter++;
         }
 
         // start executing parent data list
@@ -204,8 +207,7 @@ const regularParentGenerator = (data) => {
     document.querySelector(".container").appendChild(parent);
     // add text
     // store new data to snap shot
-    ++snapShotCounter;
-    clickDataSnapshot[snapShotCounter] = data;
+
     // check if it's exist
     if (data.hasOwnProperty("text")) {
         let createHeading = document.createElement("h4");
@@ -230,129 +232,110 @@ const regularParentGenerator = (data) => {
     });
     // click event
     parent.addEventListener("click", (e) => {
-        const tl = gsap.timeline();
-        const element = gsap.utils.toArray(["#main .item", ".description"]);
-        tl.to(element, {
-            top: 0,
-            left: 0,
-            opacity: 0,
-            duration: 1,
-            onComplete: function (e) {
-                document.querySelector("#parent").remove();
-                gsap.utils
-                    .toArray(["#main .item", ".description"])
-                    .forEach((item, index) => {
-                        item.remove();
-                    });
-
-                // if (snapShotCounter >= 0) {
-                //     backwardExecution()
-                // } else {
-                //     ParentCreator(mydatabase)
-                // }
-                backwardExecution()
-                const element = gsap.utils.toArray("#main .item");
-                const timeLine = gsap.timeline();
-                timeLine.from(element, {
-                    top: 0,
-                    left: 0,
-                    duration: 1,
-                    opacity: 1,
-                });
-            },
-        });
-
         // execute backtrack
-        const backwardExecution = () => {
-            // mydatabase == clickDataSnapshot[snapShotCounter] ? --snapShotCounter : null;
-            if (mydatabase == clickDataSnapshot[--snapShotCounter]) {
-                console.log(snapShotCounter);
-                let parent = ParentCreator(clickDataSnapshot[snapShotCounter]);
-                parent.classList.add("animate");
-                dataBaseExecutor(clickDataSnapshot[snapShotCounter].data);
-            } else {
-                let counter = --snapShotCounter;
-                if (counter) {
-                    ParentCreator(mydatabase);
-                    
-                    document.querySelector('#parent').classList.toggle('animate');
-                } else {
-                    console.log(snapShotCounter)
-                    regularParentGenerator(clickDataSnapshot[counter]);
-                    dataBaseExecutor(clickDataSnapshot[counter].data);
-                }
-            }
-        };
-
-        // --------------------------------------- execute backward data -------------------------------------------
-        // dataBaseExecutor(clickDataSnapshot[snapShotCounter])
-
-        // execute data
-        // if (data == clickDataSnapshot[snapShotCounter]) {
-        //     dataBaseExecutor(data.data);
-        //     clickDataSnapshot[snapShotCounter] = data;
-        //     snapShotCounter++;
-        // }
-
-        // start executing parent data list
-        // --------------------------------------- here I am updating my animation ----------------------------------------
-        //     if (!data.expanded) {
-        //         data.expanded = true;
-        //         // animation
-        //         gsap.from(gsap.utils.toArray(".item"), {
-        //             left: 0,
-        //             top: 0,
-        //             opacity: 0,
-        //             duration: 0.5,
-        //         });
-        //     } else {
-        //         data.expanded = false;
-        //         // animation
-        //         gsap.to(gsap.utils.toArray(".item"), {
-        //             left: 0,
-        //             top: 0,
-        //             opacity: 0,
-        //             duration: 0.5,
-        //             onComplete: function () {
-        //                 document
-        //                     .querySelectorAll("#main .item")
-        //                     .forEach((item, index) => {
-        //                         item.remove();
-        //                     });
-        //                 snapShotCounter--;
-        //             },
-        //         });
-        //     }
-        // });
-
-        // ------------------------------------ gsap animation initialized --------------------------------------
-        // execute data
-        // if (data == clickDataSnapshot[snapShotCounter]) {
-        //     dataBaseExecutor(data.data);
-        //     clickDataSnapshot[snapShotCounter] = data;
-        //     snapShotCounter++;
-        // }
-
-        // start executing parent data list
-        // --------------------------------------- here I am updating my animation ----------------------------------------
-        // if (!data.expanded) {
-        //     data.expanded = true;
-        //     console.log('run when false', data.expanded)
-        // } else {
-        //     console.log('run when true', data.expanded)
-        //     data.expanded = false;
-        // }
+        if (data.type === "text") {
+            gsap.to("#parent", {
+                y: 105,
+                opacity: 0,
+                duration: 0.4,
+                onComplete: function (e) {
+                    document.querySelector("#parent").remove();
+                },
+            });
+            gsap.to(".description", {
+                y: -105,
+                opacity: 0,
+                duration: 0.6,
+                onComplete: function () {
+                    document.querySelector(".description").remove();
+                    let counter = --snapShotCounter;
+                    if (counter > 0) {
+                        regularParentGenerator(clickDataSnapshot[counter]);
+                        dataBaseExecutor(clickDataSnapshot[counter].data);
+                        gsap.from("#main .item", {
+                            top: 0,
+                            left: 0,
+                            opacity: 1,
+                            duration: 0.5,
+                        });
+                    } else {
+                        ParentCreator(clickDataSnapshot[0]);
+                        dataBaseExecutor(clickDataSnapshot[0].data);
+                        gsap.from("#main .item", {
+                            top: 0,
+                            left: 0,
+                            opacity: 1,
+                            duration: 0.5,
+                        });
+                    }
+                },
+            });
+        } else if (data.type === "list") {
+            gsap.to("#main .item", {
+                top: 0,
+                left: 0,
+                opacity: 0,
+                duration: 0.4,
+                onComplete: function () {
+                    document
+                        .querySelectorAll("#main .item")
+                        .forEach((item, index) => {
+                            item.remove();
+                        });
+                    document.querySelector("#parent").remove();
+                    // new parent
+                    let counter = --snapShotCounter;
+                    if (counter > 0) {
+                        regularParentGenerator(clickDataSnapshot[counter]);
+                        dataBaseExecutor(clickDataSnapshot[counter].data);
+                        gsap.from("#main .item", {
+                            top: 0,
+                            left: 0,
+                            opacity: 1,
+                            duration: 0.5,
+                        });
+                    } else {
+                        ParentCreator(clickDataSnapshot[0]);
+                        dataBaseExecutor(clickDataSnapshot[0].data);
+                        gsap.from("#main .item", {
+                            top: 0,
+                            left: 0,
+                            opacity: 1,
+                            duration: 0.5,
+                        });
+                    }
+                },
+            });
+        }
     });
     return parent;
 };
-// ------------------------------------------------ remove all property ---------------------------------------------------
 
-// ------------------------------------------------- check if has property-----------------------------------------------
+// backward parent datasnap
+
+// --------------------------------- execute backwards ----------------------------------------
+function executeBackward() {
+    // regularParentGenerator(clickDataSnapshot[snapShotCounter]);
+    // console.log(data);
+    // --snapShotCounter;
+    // if (snapShotCounter <= 0) {
+    //     snapShotCounter = 0
+    // }
+    // console.log('hello rejoan')
+    // if ( mydatabase == clickDataSnapshot[snapShotCounter]) {
+    //     console.log('mydatabase');
+    //     console.log('click snap', clickDataSnapshot);
+    // } else {
+    //     regularParentGenerator(clickDataSnapshot[snapShotCounter]);
+    //     dataBaseExecutor(clickDataSnapshot[snapShotCounter].data);
+    //     console.log(clickDataSnapshot[snapShotCounter]);
+    //     console.log(snapShotCounter)
+    // }
+}
 
 //------------------------------------------------------ data executor -------------------------------------------------------------
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
-
     switch (typeof dataArrray) {
         case "object":
             dataArrray.forEach((item, index) => {
@@ -375,12 +358,4 @@ const dataBaseExecutor = (dataArrray) => {
 do {
     clickDataSnapshot[snapShotCounter] = mydatabase;
     let another = ParentCreator(mydatabase);
-    // gsap.from(another, {
-    //     scale: 0,
-    //     rotateY: 200,
-    //     duration: 2,
-    //     delay: 0.3
-    // })
 } while (false);
-
-// -------------------------------------- snap shot / state updater ------------------------------------------
