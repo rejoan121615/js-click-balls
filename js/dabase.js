@@ -122,6 +122,7 @@ export const dynamicObjectData = [
                         img: "./img/BallHoverState.png",
                         hoverImg: "./img/BallHoverStatev2.png",
                         text: "ka fractal",
+                        data: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas reiciendis minus doloremque, error repudiandae rerum?'
                     },
                     {
                         type: "text",
@@ -130,6 +131,7 @@ export const dynamicObjectData = [
                         img: "./img/BallHoverState.png",
                         hoverImg: "./img/BallHoverStatev2.png",
                         text: "emody your vision",
+                        data: 'Lorem ipsum dolor, sit amet consectetur adipisicing elit. Dolor, nemo eveniet ratione maxime itaque aspernatur maiores perferendis! Autem, velit. Corporis?'
                     },
                     {
                         type: "list",
@@ -170,7 +172,6 @@ export const dynamicObjectData = [
                             {
                                 type: "list",
                                 expanded: false,
-
                                 size: "small",
                                 text: "Start 2",
                                 img: "./img/BallHoverState.png",

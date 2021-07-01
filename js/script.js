@@ -6,12 +6,12 @@ let mydatabase = database[0];
 // variable
 
 let allProducredElement = [];
-// -------------------- take snap shot and store -------------------------
+// -------------------------------------------------------- take snap shot and store -------------------------
 const clickDataSnapshot = [];
 var snapShotCounter = 0;
 var parentClickCounter = 0;
 
-//--------------------------- child div creator --------------------------------------------------
+//--------------------------------------------------- child div creator --------------------------------------------------------------
 const DivCreator = (data) => {
     // create div
     let div = document.createElement("div");
@@ -29,12 +29,10 @@ const DivCreator = (data) => {
             duration: 0.5,
             onComplete: function (e) {
                 // store current data
-                // if (data == clickDataSnapshot[snapShotCounter]) {
                 clickDataSnapshot[snapShotCounter] = data;
-                console.log(data);
                 // store click data
                 document.querySelector("#parent").remove();
-                ParentCreator(data);
+                regularParentGenerator(data);
                 // remove all child
                 document
                     .querySelectorAll("#main .item")
@@ -74,7 +72,7 @@ const DivCreator = (data) => {
         return;
     }
     // add text
-    if (hasPro(data, "text")) {
+    if (data.hasOwnProperty("text")) {
         let createHeading = document.createElement("h4");
         let createTextNode = document.createTextNode(data.text);
         createHeading.appendChild(createTextNode);
@@ -82,7 +80,7 @@ const DivCreator = (data) => {
     }
     // add background
     let backgroundImg;
-    if (hasPro(data, "img")) {
+    if (data.hasOwnProperty("img")) {
         backgroundImg = document.createElement("img");
         backgroundImg.src = data.img;
         backgroundImg.alt = "background image";
@@ -91,7 +89,7 @@ const DivCreator = (data) => {
     }
     // image hover effect
     div.addEventListener("mouseenter", () => {
-        if (hasPro(data, "hoverImg")) {
+        if (data.hasOwnProperty("hoverImg")) {
             backgroundImg.src = data.hoverImg;
         } else {
             backgroundImg.src = data.img;
@@ -104,16 +102,14 @@ const DivCreator = (data) => {
     div.classList.add(data.size);
     return div;
 };
-// ------------------------------------ last node creator -------------------------------------------
+// ------------------------------------------------ last node creator -------------------------------------------
 const NodeDescriptionCreator = (texts) => {
     // create div
     let div = document.createElement("div");
     div.classList.add("item");
     div.classList.add("description");
     // bind event
-    div.addEventListener("click", (e) => {
-        console.log("clicked");
-    });
+    div.addEventListener("click", (e) => {});
     // add text
     let createHeading = document.createElement("p");
     createHeading.innerHTML = texts;
@@ -123,7 +119,7 @@ const NodeDescriptionCreator = (texts) => {
     return div;
 };
 
-// ----------------------parent producer ---------------------------------------------
+// -------------------------------------------------------parent producer ----------------------------------------------------------
 const ParentCreator = (data) => {
     let parent = document.createElement("div");
     parent.id = "parent";
@@ -134,14 +130,14 @@ const ParentCreator = (data) => {
         return;
     }
     // add text
-    if (hasPro(data, "text")) {
+    if (data.hasOwnProperty("text")) {
         let createHeading = document.createElement("h4");
         createHeading.innerHTML = data.text;
         parent.appendChild(createHeading);
     }
     // add background
     let img;
-    if (hasPro(data, "img")) {
+    if (data.hasOwnProperty("img")) {
         img = document.createElement("img");
         img.src = data.img;
         img.alt = "background image";
@@ -157,26 +153,26 @@ const ParentCreator = (data) => {
     });
     // click event
     parent.addEventListener("click", (e) => {
-        // ------------ gsap animation initialized --------------------------
-
+        // ------------------------------------ gsap animation initialized --------------------------------------
         // add border animation class
         parent.classList.toggle("animate");
-        // store all child dive element
-        let childDivList;
+        // execute data
+        if (data == clickDataSnapshot[snapShotCounter]) {
+            dataBaseExecutor(data.data);
+            clickDataSnapshot[snapShotCounter] = data;
+            snapShotCounter++;
+        }
+
         // start executing parent data list
+        // --------------------------------------- here I am updating my animation ----------------------------------------
         if (!data.expanded) {
-            if (data.data != clickDataSnapshot[snapShotCounter]) {
-                childDivList = dataBaseExecutor(data.data);
-                clickDataSnapshot[snapShotCounter] = data;
-                console.log(clickDataSnapshot);
-            }
             data.expanded = true;
             // animation
             gsap.from(gsap.utils.toArray(".item"), {
                 left: 0,
                 top: 0,
                 opacity: 0,
-                duration: 1,
+                duration: 0.5,
             });
         } else {
             data.expanded = false;
@@ -185,20 +181,175 @@ const ParentCreator = (data) => {
                 left: 0,
                 top: 0,
                 opacity: 0,
-                duration: 1,
-                onComplete: function () {},
+                duration: 0.5,
+                onComplete: function () {
+                    document
+                        .querySelectorAll("#main .item")
+                        .forEach((item, index) => {
+                            item.remove();
+                        });
+                    snapShotCounter--;
+                },
             });
         }
     });
     return parent;
 };
 
-// check if has property
-const hasPro = (obj, property) => {
-    return obj.hasOwnProperty(property);
-};
+// ---------------------------------------------------------- regular parent generator ----------------------------------
 
-// data executor
+const regularParentGenerator = (data) => {
+    let parent = document.createElement("div");
+    parent.id = "parent";
+    document.querySelector(".container").appendChild(parent);
+    // add text
+    // store new data to snap shot
+    ++snapShotCounter;
+    clickDataSnapshot[snapShotCounter] = data;
+    // check if it's exist
+    if (data.hasOwnProperty("text")) {
+        let createHeading = document.createElement("h4");
+        createHeading.innerHTML = data.text;
+        parent.appendChild(createHeading);
+    }
+    // add background
+    let img;
+    if (data.hasOwnProperty("img")) {
+        img = document.createElement("img");
+        img.src = data.img;
+        img.alt = "background image";
+        img.classList.add("bg-img");
+        parent.appendChild(img);
+    }
+    // image hover effect
+    parent.addEventListener("mouseenter", () => {
+        img.src = data.hoverImg;
+    });
+    parent.addEventListener("mouseleave", () => {
+        img.src = data.img;
+    });
+    // click event
+    parent.addEventListener("click", (e) => {
+        const tl = gsap.timeline();
+        const element = gsap.utils.toArray(["#main .item", ".description"]);
+        tl.to(element, {
+            top: 0,
+            left: 0,
+            opacity: 0,
+            duration: 1,
+            onComplete: function (e) {
+                document.querySelector("#parent").remove();
+                gsap.utils
+                    .toArray(["#main .item", ".description"])
+                    .forEach((item, index) => {
+                        item.remove();
+                    });
+
+                // if (snapShotCounter >= 0) {
+                //     backwardExecution()
+                // } else {
+                //     ParentCreator(mydatabase)
+                // }
+                backwardExecution()
+                const element = gsap.utils.toArray("#main .item");
+                const timeLine = gsap.timeline();
+                timeLine.from(element, {
+                    top: 0,
+                    left: 0,
+                    duration: 1,
+                    opacity: 1,
+                });
+            },
+        });
+
+        // execute backtrack
+        const backwardExecution = () => {
+            // mydatabase == clickDataSnapshot[snapShotCounter] ? --snapShotCounter : null;
+            if (mydatabase == clickDataSnapshot[--snapShotCounter]) {
+                console.log(snapShotCounter);
+                let parent = ParentCreator(clickDataSnapshot[snapShotCounter]);
+                parent.classList.add("animate");
+                dataBaseExecutor(clickDataSnapshot[snapShotCounter].data);
+            } else {
+                let counter = --snapShotCounter;
+                if (counter) {
+                    ParentCreator(mydatabase);
+                    
+                    document.querySelector('#parent').classList.toggle('animate');
+                } else {
+                    console.log(snapShotCounter)
+                    regularParentGenerator(clickDataSnapshot[counter]);
+                    dataBaseExecutor(clickDataSnapshot[counter].data);
+                }
+            }
+        };
+
+        // --------------------------------------- execute backward data -------------------------------------------
+        // dataBaseExecutor(clickDataSnapshot[snapShotCounter])
+
+        // execute data
+        // if (data == clickDataSnapshot[snapShotCounter]) {
+        //     dataBaseExecutor(data.data);
+        //     clickDataSnapshot[snapShotCounter] = data;
+        //     snapShotCounter++;
+        // }
+
+        // start executing parent data list
+        // --------------------------------------- here I am updating my animation ----------------------------------------
+        //     if (!data.expanded) {
+        //         data.expanded = true;
+        //         // animation
+        //         gsap.from(gsap.utils.toArray(".item"), {
+        //             left: 0,
+        //             top: 0,
+        //             opacity: 0,
+        //             duration: 0.5,
+        //         });
+        //     } else {
+        //         data.expanded = false;
+        //         // animation
+        //         gsap.to(gsap.utils.toArray(".item"), {
+        //             left: 0,
+        //             top: 0,
+        //             opacity: 0,
+        //             duration: 0.5,
+        //             onComplete: function () {
+        //                 document
+        //                     .querySelectorAll("#main .item")
+        //                     .forEach((item, index) => {
+        //                         item.remove();
+        //                     });
+        //                 snapShotCounter--;
+        //             },
+        //         });
+        //     }
+        // });
+
+        // ------------------------------------ gsap animation initialized --------------------------------------
+        // execute data
+        // if (data == clickDataSnapshot[snapShotCounter]) {
+        //     dataBaseExecutor(data.data);
+        //     clickDataSnapshot[snapShotCounter] = data;
+        //     snapShotCounter++;
+        // }
+
+        // start executing parent data list
+        // --------------------------------------- here I am updating my animation ----------------------------------------
+        // if (!data.expanded) {
+        //     data.expanded = true;
+        //     console.log('run when false', data.expanded)
+        // } else {
+        //     console.log('run when true', data.expanded)
+        //     data.expanded = false;
+        // }
+    });
+    return parent;
+};
+// ------------------------------------------------ remove all property ---------------------------------------------------
+
+// ------------------------------------------------- check if has property-----------------------------------------------
+
+//------------------------------------------------------ data executor -------------------------------------------------------------
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
 
@@ -212,9 +363,6 @@ const dataBaseExecutor = (dataArrray) => {
             break;
         case "string":
             NodeDescriptionCreator(dataArrray);
-            // divOrganizer(2, 350, "main", gsap.utils.toArray['#parent', '.item']);
-            // console.log(document.querySelector('#parent'))
-            // console.log(document.querySelector('.item'))
             break;
     }
 
@@ -223,34 +371,9 @@ const dataBaseExecutor = (dataArrray) => {
     return currentDivList;
 };
 
-// parent click handler ----------------------------------------
-// document.querySelector('#parent').addEventListener('click', () => {
-
-// })
-
-// gsap child animation
-// function animation(targetedItem, clicked) {
-//     const elements = gsap.utils.toArray(targetedItem);
-//     const bounds = [];
-
-//     let collapsed;
-
-//     elements.forEach((item, index) => {
-//         let curBounds = (bounds[index] = item.getBoundingClientRect());
-//         clicked.addEventListener("click", () => {
-//             collapsed = !collapsed;
-//             gsap.to(elements, {
-//                 x: (i) => (collapsed ? curBounds.left - bounds[i].left : 0),
-//                 y: (i) => (collapsed ? curBounds.top - bounds[i].top : 0),
-//                 stagger: 0.2,
-//                 overwrite: true,
-//             });
-//         });
-//     });
-// }
-
-// auto start exucution --------------------------------------------------------
+// ------------------------------------------- auto start exucution --------------------------------------------------------
 do {
+    clickDataSnapshot[snapShotCounter] = mydatabase;
     let another = ParentCreator(mydatabase);
     // gsap.from(another, {
     //     scale: 0,
@@ -259,3 +382,5 @@ do {
     //     delay: 0.3
     // })
 } while (false);
+
+// -------------------------------------- snap shot / state updater ------------------------------------------
