@@ -9,6 +9,7 @@ let allProducredElement = [];
 // -------------------- take snap shot and store -------------------------
 const clickDataSnapshot = [];
 var snapShotCounter = 0;
+var parentClickCounter = 0;
 
 //--------------------------- child div creator --------------------------------------------------
 const DivCreator = (data) => {
@@ -85,10 +86,42 @@ const ParentCreator = (data) => {
         img.src = data.img;
     });
     // click event
-    parent.addEventListener("click", () => {
+    parent.addEventListener("click", (e) => {
+        // add border animation class 
         parent.classList.toggle("animate");
+        // store all child dive element 
+        let childDivList;
         // start executing parent data list
-        dataBaseExecutor(data.data);
+        if (data.data != clickDataSnapshot[snapShotCounter]) {
+            childDivList = dataBaseExecutor(data.data);
+            // -------------------- animation ------------------
+            const target = gsap.utils.toArray('#main .item');
+            gsap.from(target, {
+                left: 0,
+                top: 0,
+                opacity: 0,
+                duration: 1.3,
+                delay: 0.5
+            })
+        } else {
+            const target = gsap.utils.toArray("#main .item");
+            gsap.to(target, {
+                left: 0,
+                top: 0,
+                opacity: 0,
+                duration: 1.3,
+                delay: 0.5
+            });
+        }
+        // // -------------------- animation ------------------ 
+        // const tl = gsap.timeline();
+        // const target = gsap.utils.toArray('#main .item');
+        // tl.from(target, {
+        //     left: 0,
+        //     top: 0,
+        //     opacity: 0,
+        //     duration: 1.3
+        // })
     });
     return parent;
 };
@@ -98,7 +131,7 @@ const hasPro = (obj, property) => {
     return obj.hasOwnProperty(property);
 };
 
-// data executor
+// data executor 
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
     dataArrray.forEach((item, index) => {
@@ -106,11 +139,37 @@ const dataBaseExecutor = (dataArrray) => {
     });
     // push data into the html
     clickDataSnapshot[snapShotCounter] = dataArrray;
+    // take data and decorate 
     divOrganizer(dataArrray.length, 350, "main", currentDivList);
-    // console.log(clickDataSnapshot);
-    console.log(currentDivList)
+    // return div list 
+    return currentDivList;
 };
 
+// parent click handler ----------------------------------------
+
+// gsap child animation 
+function animation(targetedItem, clicked) {
+    const elements = gsap.utils.toArray(targetedItem);
+    const bounds = [];
+
+    let collapsed;
+
+    elements.forEach((item, index) => {
+        let curBounds = (bounds[index] = item.getBoundingClientRect());
+        clicked.addEventListener("click", () => {
+            collapsed = !collapsed;
+            gsap.to(elements, {
+                x: (i) => (collapsed ? curBounds.left - bounds[i].left : 0),
+                y: (i) => (collapsed ? curBounds.top - bounds[i].top : 0),
+                stagger: 0.2,
+                overwrite: true,
+            });
+        });
+    });
+}
+
+
+// auto start exucution --------------------------------------------------------
 do {
     ParentCreator(mydatabase);
 } while (false);

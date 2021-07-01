@@ -41,6 +41,7 @@ body {
   justify-items: center;
   position: relative;
   cursor: pointer;
+  z-index: 2000;
 }
 .container #parent img {
   width: 100%;
