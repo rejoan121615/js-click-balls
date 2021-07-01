@@ -158,29 +158,22 @@ const ParentCreator = (data) => {
     // click event
     parent.addEventListener("click", (e) => {
         // ------------------------------------ gsap animation initialized --------------------------------------
-
-        // add border animation class
         parent.classList.toggle("animate");
-        // execute data
-        if (data == clickDataSnapshot[snapShotCounter]) {
-            dataBaseExecutor(data.data);
-        }
+        dataBaseExecutor(data.data);
 
-        // start executing parent data list
         // --------------------------------------- here I am updating my animation ----------------------------------------
         if (!data.expanded) {
-            data.expanded = true;
             // animation
-            gsap.from(gsap.utils.toArray(".item"), {
+            gsap.from("#main .item", {
                 left: 0,
                 top: 0,
                 opacity: 0,
                 duration: 0.5,
             });
+            data.expanded = true;
         } else {
-            data.expanded = false;
             // animation
-            gsap.to(gsap.utils.toArray(".item"), {
+            gsap.to('#main .item', {
                 left: 0,
                 top: 0,
                 opacity: 0,
@@ -191,9 +184,9 @@ const ParentCreator = (data) => {
                         .forEach((item, index) => {
                             item.remove();
                         });
-                    snapShotCounter--;
                 },
             });
+            data.expanded = false;
         }
     });
     return parent;
