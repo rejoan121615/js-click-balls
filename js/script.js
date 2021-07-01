@@ -33,23 +33,26 @@ const DivCreator = (data) => {
                     if (data !== clickDataSnapshot[snapShotCounter]) {
                         clickDataSnapshot[snapShotCounter] = data;
                         snapShotCounter++;
+                        console.log(clickDataSnapshot);
+                        // store click data
+                        document.querySelector("#parent").remove();
+                        ParentCreator(data);
+                        // remove all child
+                        document
+                            .querySelectorAll("#main .item")
+                            .forEach((item, index) => {
+                                item.remove();
+                            });
+                        // create new element
+                        dataBaseExecutor(data.data);
+                        gsap.from("#main .item", {
+                            top: 0,
+                            left: 0,
+                            opacity: 0,
+                            duration: 1,
+                        });
                     }
-                    console.log(clickDataSnapshot)
-                    // store click data 
-                    document.querySelector("#parent").remove();
-                    ParentCreator(data)
-                    // remove all child 
-                    document.querySelectorAll('#main .item').forEach((item, index) => {
-                        item.remove()
-                    });
-                    // create new element 
-                    dataBaseExecutor(data.data);
-                    gsap.from('#main .item', {
-                        top: 0,
-                        left: 0,
-                        opacity: 0,
-                        duration: 1
-                    })
+                    
                     
                 },
             })
@@ -173,7 +176,7 @@ const ParentCreator = (data) => {
                 opacity: 0,
                 duration: 1,
                 onComplete: function () {
-                    location.reload();
+                   
                 },
             });
         }
