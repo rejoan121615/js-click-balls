@@ -14,11 +14,23 @@ body {
   align-items: center;
   justify-items: center;
 }
-.item h4 {
+
+h4, .description {
   font-family: Arial, Helvetica, sans-serif;
   color: white;
   font-weight: bold;
   text-transform: capitalize;
+  position: absolute;
+}
+
+.description {
+  width: 80%;
+  height: auto;
+  border-radius: 15px;
+  border: 2px solid white;
+  background-color: #484848;
+  position: initial;
+  padding: 25px 35px;
 }
 
 .container {

@@ -19,27 +19,40 @@ const DivCreator = (data) => {
     // bind event
     div.addEventListener("click", (e) => {
         const tl = gsap.timeline();
-        tl.to(gsap.utils.toArray('#main .item'), {
+        tl.to(gsap.utils.toArray("#main .item"), {
             left: 0,
             top: 0,
             opacity: 0,
-            duration: 1
-        }).to('#parent', {
-            scale: 0.4,
-            duration: 0.8,
-            onComplete: function (e) {
-                // let parent = document.querySelector("#parent");
-                // parent.classList.remove('animate');
-                // document.querySelector('#parent img').remove();
-                // let img = document.createElement('img');
-                // img.classList.add('bg-img');
-                // img.src = data.img;
-                // parent.appendChild(img)
-                console.log(data)
-            }
-        }).to("#parent", {
-            scale: 1
+            duration: 1,
         })
+            .to("#parent", {
+                scale: 0.9,
+                duration: 0.5,
+                onComplete: function (e) {
+                    // store current data 
+                    if (data !== clickDataSnapshot[snapShotCounter]) {
+                        clickDataSnapshot[snapShotCounter] = data;
+                        snapShotCounter++;
+                    }
+                    console.log(clickDataSnapshot)
+                    // store click data 
+                    document.querySelector("#parent").remove();
+                    ParentCreator(data)
+                    // remove all child 
+                    document.querySelectorAll('#main .item').forEach((item, index) => {
+                        item.remove()
+                    });
+                    // create new element 
+                    dataBaseExecutor(data.data);
+                    gsap.from('#main .item', {
+                        top: 0,
+                        left: 0,
+                        opacity: 0,
+                        duration: 1
+                    })
+                    
+                },
+            })
     });
     // if undefine
     if (!data) {
@@ -76,18 +89,39 @@ const DivCreator = (data) => {
     div.classList.add(data.size);
     return div;
 };
+// ------------------------------------ last node creator -------------------------------------------
+const NodeDescriptionCreator = (texts) => {
+    // create div
+    let div = document.createElement("div");
+    div.classList.add("item");
+    div.classList.add("description");
+    // bind event
+    div.addEventListener("click", (e) => {
+        console.log('clicked')
+    });
+    // add text
+        let createHeading = document.createElement("p");
+    createHeading.innerHTML = texts;
+        div.appendChild(createHeading);
+    // return div
+    document.querySelector('.container').appendChild(div);
+    return div;
+}
 
 // ----------------------parent producer ---------------------------------------------
 const ParentCreator = (data) => {
-    let parent = document.querySelector("#parent");
+    let parent = document.createElement("div");
+    parent.id = "parent";
+    document.querySelector(".container").appendChild(parent);
+    // let parent = document.querySelector("#parent");
     // if undefine
     if (!data) {
         return;
     }
     // add text
     if (hasPro(data, "text")) {
-        let createHeading = (document.createElement("h4").innerHTML =
-            data.text);
+        let createHeading = document.createElement("h4");
+        createHeading.innerHTML = data.text;
         parent.appendChild(createHeading);
     }
     // add background
@@ -116,30 +150,32 @@ const ParentCreator = (data) => {
         let childDivList;
         // start executing parent data list
         if (!data.expanded) {
-            data.data != clickDataSnapshot[snapShotCounter]
-                ? (childDivList = dataBaseExecutor(data.data))
-                : console.log("no data added");
+            if (data.data != clickDataSnapshot[snapShotCounter]) {
+                childDivList = dataBaseExecutor(data.data);
+                clickDataSnapshot[snapShotCounter] = data;
+                snapShotCounter++;
+                console.log(clickDataSnapshot)
+            }
             data.expanded = true;
-            console.log(data.expanded);
-            // animation 
-            gsap.from(gsap.utils.toArray('.item'), {
+            // animation
+            gsap.from(gsap.utils.toArray(".item"), {
                 left: 0,
                 top: 0,
                 opacity: 0,
-                duration: 1
-            })
+                duration: 1,
+            });
         } else {
             data.expanded = false;
-            // animation 
-            gsap.to(gsap.utils.toArray('.item'), {
+            // animation
+            gsap.to(gsap.utils.toArray(".item"), {
                 left: 0,
                 top: 0,
                 opacity: 0,
                 duration: 1,
                 onComplete: function () {
-                    location.reload()
-                }
-            })
+                    location.reload();
+                },
+            });
         }
     });
     return parent;
@@ -152,22 +188,30 @@ const hasPro = (obj, property) => {
 
 // data executor
 const dataBaseExecutor = (dataArrray) => {
-    let currentDivList = [];
-    dataArrray.forEach((item, index) => {
-        currentDivList[index] = DivCreator(item);
-    });
+        let currentDivList = [];
+        
+    switch (typeof dataArrray) {
+        case "object":
+            dataArrray.forEach((item, index) => {
+                currentDivList[index] = DivCreator(item);
+            });
+            // take data and decorate
+            divOrganizer(dataArrray.length, 350, "main", currentDivList);
+            break;
+        case "string":
+            NodeDescriptionCreator(dataArrray);
+            break;
+    }
+
     // push data into the html
-    clickDataSnapshot[snapShotCounter] = dataArrray;
-    // take data and decorate
-    divOrganizer(dataArrray.length, 350, "main", currentDivList);
     // return div list
     return currentDivList;
 };
 
 // parent click handler ----------------------------------------
-document.querySelector('#parent').addEventListener('click', () => {
+// document.querySelector('#parent').addEventListener('click', () => {
 
-})
+// })
 
 // gsap child animation
 // function animation(targetedItem, clicked) {

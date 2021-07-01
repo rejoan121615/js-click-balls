@@ -13,14 +13,25 @@ body {
     display: grid;
     align-items: center;
     justify-items: center;
-    h4 {
+    
+}
+h4 {
         font-family: Arial, Helvetica, sans-serif;
         color: white;
         font-weight: bold;
         text-transform: capitalize;
+        position: absolute;
     }
-}
-
+    .description {
+        @extend h4;
+        width: 80%;
+        height: auto;
+        border-radius: 15px;
+        border: 2px solid white;
+        background-color: #484848;
+        position: initial;
+        padding: 25px 35px;
+    }
 .container {
     width: 100vw;
     height: 100vh;
