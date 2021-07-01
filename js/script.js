@@ -260,6 +260,9 @@ const regularParentGenerator = (data) => {
                         });
                     } else {
                         ParentCreator(clickDataSnapshot[0]);
+                        document
+                            .querySelector("#parent")
+                            .classList.toggle("animate");
                         dataBaseExecutor(clickDataSnapshot[0].data);
                         gsap.from("#main .item", {
                             top: 0,
@@ -296,6 +299,9 @@ const regularParentGenerator = (data) => {
                         });
                     } else {
                         ParentCreator(clickDataSnapshot[0]);
+                        document
+                            .querySelector("#parent")
+                            .classList.toggle("animate");
                         dataBaseExecutor(clickDataSnapshot[0].data);
                         gsap.from("#main .item", {
                             top: 0,
