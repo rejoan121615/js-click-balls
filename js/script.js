@@ -24,38 +24,50 @@ const DivCreator = (data) => {
             top: 0,
             opacity: 0,
             duration: 1,
-        })
-            .to("#parent", {
-                scale: 0.9,
-                duration: 0.5,
-                onComplete: function (e) {
-                    // store current data 
-                    if (data !== clickDataSnapshot[snapShotCounter]) {
-                        clickDataSnapshot[snapShotCounter] = data;
-                        snapShotCounter++;
-                        console.log(clickDataSnapshot);
-                        // store click data
-                        document.querySelector("#parent").remove();
-                        ParentCreator(data);
-                        // remove all child
-                        document
-                            .querySelectorAll("#main .item")
-                            .forEach((item, index) => {
-                                item.remove();
-                            });
-                        // create new element
-                        dataBaseExecutor(data.data);
-                        gsap.from("#main .item", {
-                            top: 0,
-                            left: 0,
-                            opacity: 0,
-                            duration: 1,
-                        });
-                    }
-                    
-                    
-                },
-            })
+        }).to("#parent", {
+            scale: 0.9,
+            duration: 0.5,
+            onComplete: function (e) {
+                // store current data
+                // if (data == clickDataSnapshot[snapShotCounter]) {
+                clickDataSnapshot[snapShotCounter] = data;
+                console.log(data);
+                // store click data
+                document.querySelector("#parent").remove();
+                ParentCreator(data);
+                // remove all child
+                document
+                    .querySelectorAll("#main .item")
+                    .forEach((item, index) => {
+                        item.remove();
+                    });
+                // create new element
+                dataBaseExecutor(data.data);
+                if (data.type == "list") {
+                    gsap.from("#main .item", {
+                        top: 0,
+                        left: 0,
+                        opacity: 0,
+                        duration: 1,
+                    });
+                } else if (data.type == "text") {
+                    const timeline = gsap.timeline();
+                    let element = gsap.utils.toArray([".item", "#parent"]);
+                    gsap.from(element[1], {
+                        y: 150,
+                        opacity: 0,
+                        duration: 1,
+                    });
+                    gsap.from(element[0], {
+                        y: -150,
+                        opacity: 0,
+                        duration: 1,
+                    });
+                }
+
+                // }
+            },
+        });
     });
     // if undefine
     if (!data) {
@@ -100,16 +112,16 @@ const NodeDescriptionCreator = (texts) => {
     div.classList.add("description");
     // bind event
     div.addEventListener("click", (e) => {
-        console.log('clicked')
+        console.log("clicked");
     });
     // add text
-        let createHeading = document.createElement("p");
+    let createHeading = document.createElement("p");
     createHeading.innerHTML = texts;
-        div.appendChild(createHeading);
+    div.appendChild(createHeading);
     // return div
-    document.querySelector('.container').appendChild(div);
+    document.querySelector(".container").appendChild(div);
     return div;
-}
+};
 
 // ----------------------parent producer ---------------------------------------------
 const ParentCreator = (data) => {
@@ -156,8 +168,7 @@ const ParentCreator = (data) => {
             if (data.data != clickDataSnapshot[snapShotCounter]) {
                 childDivList = dataBaseExecutor(data.data);
                 clickDataSnapshot[snapShotCounter] = data;
-                snapShotCounter++;
-                console.log(clickDataSnapshot)
+                console.log(clickDataSnapshot);
             }
             data.expanded = true;
             // animation
@@ -175,9 +186,7 @@ const ParentCreator = (data) => {
                 top: 0,
                 opacity: 0,
                 duration: 1,
-                onComplete: function () {
-                   
-                },
+                onComplete: function () {},
             });
         }
     });
@@ -191,8 +200,8 @@ const hasPro = (obj, property) => {
 
 // data executor
 const dataBaseExecutor = (dataArrray) => {
-        let currentDivList = [];
-        
+    let currentDivList = [];
+
     switch (typeof dataArrray) {
         case "object":
             dataArrray.forEach((item, index) => {
@@ -203,6 +212,9 @@ const dataBaseExecutor = (dataArrray) => {
             break;
         case "string":
             NodeDescriptionCreator(dataArrray);
+            // divOrganizer(2, 350, "main", gsap.utils.toArray['#parent', '.item']);
+            // console.log(document.querySelector('#parent'))
+            // console.log(document.querySelector('.item'))
             break;
     }
 
