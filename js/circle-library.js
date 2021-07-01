@@ -5,10 +5,6 @@ var setup = function (n, r, id, divList) {
     var mainHeight = parseInt(window.getComputedStyle(main).height.slice(0, -2));
     var circleArray = [];
     for (var i = 0; i < n; i++) {
-        // var circle = document.createElement('div');
-        // circle.className = 'circle number' + i;
-        // radymateArray element 
-        
         // 
         circleArray.push(divList[i]);
         circleArray[i].posx = Math.round(r * (Math.cos(theta[i]))) + 'px';
