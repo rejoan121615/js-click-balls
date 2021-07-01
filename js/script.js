@@ -18,7 +18,28 @@ const DivCreator = (data) => {
     div.classList.add("item");
     // bind event
     div.addEventListener("click", (e) => {
-        console.log("just clicked an a item");
+        const tl = gsap.timeline();
+        tl.to(gsap.utils.toArray('#main .item'), {
+            left: 0,
+            top: 0,
+            opacity: 0,
+            duration: 1
+        }).to('#parent', {
+            scale: 0.4,
+            duration: 0.8,
+            onComplete: function (e) {
+                // let parent = document.querySelector("#parent");
+                // parent.classList.remove('animate');
+                // document.querySelector('#parent img').remove();
+                // let img = document.createElement('img');
+                // img.classList.add('bg-img');
+                // img.src = data.img;
+                // parent.appendChild(img)
+                console.log(data)
+            }
+        }).to("#parent", {
+            scale: 1
+        })
     });
     // if undefine
     if (!data) {
@@ -87,41 +108,39 @@ const ParentCreator = (data) => {
     });
     // click event
     parent.addEventListener("click", (e) => {
-        // add border animation class 
+        // ------------ gsap animation initialized --------------------------
+
+        // add border animation class
         parent.classList.toggle("animate");
-        // store all child dive element 
+        // store all child dive element
         let childDivList;
         // start executing parent data list
-        if (data.data != clickDataSnapshot[snapShotCounter]) {
-            childDivList = dataBaseExecutor(data.data);
-            // -------------------- animation ------------------
-            const target = gsap.utils.toArray('#main .item');
-            gsap.from(target, {
+        if (!data.expanded) {
+            data.data != clickDataSnapshot[snapShotCounter]
+                ? (childDivList = dataBaseExecutor(data.data))
+                : console.log("no data added");
+            data.expanded = true;
+            console.log(data.expanded);
+            // animation 
+            gsap.from(gsap.utils.toArray('.item'), {
                 left: 0,
                 top: 0,
                 opacity: 0,
-                duration: 1.3,
-                delay: 0.5
+                duration: 1
             })
         } else {
-            const target = gsap.utils.toArray("#main .item");
-            gsap.to(target, {
+            data.expanded = false;
+            // animation 
+            gsap.to(gsap.utils.toArray('.item'), {
                 left: 0,
                 top: 0,
                 opacity: 0,
-                duration: 1.3,
-                delay: 0.5
-            });
+                duration: 1,
+                onComplete: function () {
+                    location.reload()
+                }
+            })
         }
-        // // -------------------- animation ------------------ 
-        // const tl = gsap.timeline();
-        // const target = gsap.utils.toArray('#main .item');
-        // tl.from(target, {
-        //     left: 0,
-        //     top: 0,
-        //     opacity: 0,
-        //     duration: 1.3
-        // })
     });
     return parent;
 };
@@ -131,45 +150,53 @@ const hasPro = (obj, property) => {
     return obj.hasOwnProperty(property);
 };
 
-// data executor 
+// data executor
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
     dataArrray.forEach((item, index) => {
-         currentDivList[index] = DivCreator(item)
+        currentDivList[index] = DivCreator(item);
     });
     // push data into the html
     clickDataSnapshot[snapShotCounter] = dataArrray;
-    // take data and decorate 
+    // take data and decorate
     divOrganizer(dataArrray.length, 350, "main", currentDivList);
-    // return div list 
+    // return div list
     return currentDivList;
 };
 
 // parent click handler ----------------------------------------
+document.querySelector('#parent').addEventListener('click', () => {
 
-// gsap child animation 
-function animation(targetedItem, clicked) {
-    const elements = gsap.utils.toArray(targetedItem);
-    const bounds = [];
+})
 
-    let collapsed;
+// gsap child animation
+// function animation(targetedItem, clicked) {
+//     const elements = gsap.utils.toArray(targetedItem);
+//     const bounds = [];
 
-    elements.forEach((item, index) => {
-        let curBounds = (bounds[index] = item.getBoundingClientRect());
-        clicked.addEventListener("click", () => {
-            collapsed = !collapsed;
-            gsap.to(elements, {
-                x: (i) => (collapsed ? curBounds.left - bounds[i].left : 0),
-                y: (i) => (collapsed ? curBounds.top - bounds[i].top : 0),
-                stagger: 0.2,
-                overwrite: true,
-            });
-        });
-    });
-}
+//     let collapsed;
 
+//     elements.forEach((item, index) => {
+//         let curBounds = (bounds[index] = item.getBoundingClientRect());
+//         clicked.addEventListener("click", () => {
+//             collapsed = !collapsed;
+//             gsap.to(elements, {
+//                 x: (i) => (collapsed ? curBounds.left - bounds[i].left : 0),
+//                 y: (i) => (collapsed ? curBounds.top - bounds[i].top : 0),
+//                 stagger: 0.2,
+//                 overwrite: true,
+//             });
+//         });
+//     });
+// }
 
 // auto start exucution --------------------------------------------------------
 do {
-    ParentCreator(mydatabase);
+    let another = ParentCreator(mydatabase);
+    // gsap.from(another, {
+    //     scale: 0,
+    //     rotateY: 200,
+    //     duration: 2,
+    //     delay: 0.3
+    // })
 } while (false);
