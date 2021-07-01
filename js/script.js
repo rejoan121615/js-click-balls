@@ -27,7 +27,7 @@ const DivCreator = (data) => {
             left: 0,
             top: 0,
             opacity: 0,
-            duration: 1,
+            duration: 0.5,
             onComplete: function () {
                 // store click data
                 removeOldElement();
@@ -39,7 +39,7 @@ const DivCreator = (data) => {
                         top: 0,
                         left: 0,
                         opacity: 0,
-                        duration: 0.4,
+                        duration: 0.5,
                     });
                 } else if (data.type == "text") {
                     const timeline = gsap.timeline();
@@ -47,14 +47,14 @@ const DivCreator = (data) => {
                     gsap.from(element[1], {
                         y: 150,
                         opacity: 0,
-                        duration: 0.4,
+                        duration: 0.5,
                     });
                     gsap.from(
                         element[0],
                         {
                             y: -150,
                             opacity: 0,
-                            duration: 0.4,
+                            duration: 0.5,
                         },
                         "<"
                     );
@@ -225,7 +225,7 @@ const regularParentGenerator = (data) => {
             gsap.to("#parent", {
                 y: 105,
                 opacity: 0,
-                duration: 0.4,
+                duration: 0.5,
                 onComplete: function (e) {
                     document.querySelector("#parent").remove();
                 },
