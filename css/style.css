@@ -85,8 +85,6 @@ h4, .description {
   top: 40%;
 }
 .container #main .item {
-  width: 160px;
-  height: 160px;
   border-radius: 50%;
   position: relative;
 }
@@ -96,6 +94,16 @@ h4, .description {
   position: absolute;
   top: 0px;
   left: 0px;
+}
+
+.small {
+  width: 150px;
+  height: 150px;
+}
+
+.medium {
+  width: 180px;
+  height: 180px;
 }
 
 @keyframes rotateIn {

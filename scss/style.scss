@@ -87,8 +87,6 @@ h4 {
         top: 40%;
         // item style
         .item {
-            width: 160px;
-            height: 160px;
             border-radius: 50%;
             position: relative;
             img {
@@ -103,6 +101,14 @@ h4 {
 }
 
 // common item style
+.small {
+    width: 150px;
+    height: 150px;
+}
+.medium {
+    width: 180px;
+    height: 180px;
+}
 
 // keyframe animation
 @keyframes rotateIn {
