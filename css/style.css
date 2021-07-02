@@ -13,6 +13,7 @@ body {
   display: grid;
   align-items: center;
   justify-items: center;
+  text-align: center;
 }
 
 h4, .description {
@@ -80,7 +81,7 @@ h4, .description {
 }
 .container #main {
   position: absolute;
-  left: 43%;
+  left: 45%;
   top: 40%;
 }
 .container #main .item {
