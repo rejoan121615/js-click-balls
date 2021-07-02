@@ -68,7 +68,7 @@ const DivCreator = (data) => {
     }
     // add text
     if (data.hasOwnProperty("text")) {
-        let createHeading = document.createElement("h4");
+        let createHeading = document.createElement("p");
         let createTextNode = document.createTextNode(data.text);
         createHeading.appendChild(createTextNode);
         div.appendChild(createHeading);
@@ -133,7 +133,7 @@ const ParentCreator = (data) => {
     }
     // add text
     if (data.hasOwnProperty("text")) {
-        let createHeading = document.createElement("h4");
+        let createHeading = document.createElement("p");
         createHeading.innerHTML = data.text;
         parent.appendChild(createHeading);
     }
@@ -171,7 +171,7 @@ const ParentCreator = (data) => {
             data.expanded = true;
         } else {
             // animation
-            gsap.to('#main .item', {
+            gsap.to("#main .item", {
                 left: 0,
                 top: 0,
                 opacity: 0,
@@ -198,7 +198,7 @@ const regularParentGenerator = (data) => {
     document.querySelector(".container").appendChild(parent);
     // check if it's exist
     if (data.hasOwnProperty("text")) {
-        let createHeading = document.createElement("h4");
+        let createHeading = document.createElement("p");
         createHeading.innerHTML = data.text;
         parent.appendChild(createHeading);
     }
@@ -305,6 +305,34 @@ const regularParentGenerator = (data) => {
     return parent;
 };
 
+// ----------------------------------------------- responsive circle generator ---------------------------------------------------------------
+
+function calculateWidth() {
+    var circle = window.innerWidth;
+    var width = 100;
+    if (circle > 1750) {
+        width = 430;
+    } else if (circle > 1400) {
+        width = 400;
+    } else if (circle > 1200) {
+        width = 350;
+    } else if (circle > 1000) {
+        width = 310;
+    } else if (circle > 850) {
+        width = 280;
+    } else if (circle > 730) {
+        width = 230
+    } else if (circle > 610) {
+        width = 205;
+    } else if (circle > 500) {
+        width = 180;
+    } else if (circle > 400) {
+        width = 130
+    }
+    console.log(width);
+    return width;
+}
+
 //------------------------------------------------------ data executor -------------------------------------------------------------
 const dataBaseExecutor = (dataArrray) => {
     let currentDivList = [];
@@ -314,7 +342,8 @@ const dataBaseExecutor = (dataArrray) => {
                 currentDivList[index] = DivCreator(item);
             });
             // take data and decorate
-            divOrganizer(dataArrray.length, 350, "main", currentDivList);
+            
+            divOrganizer(dataArrray.length, calculateWidth(), "main", currentDivList);
             break;
         case "string":
             NodeDescriptionCreator(dataArrray);
@@ -331,9 +360,9 @@ do {
     clickDataSnapshot[snapShotCounter] = mydatabase;
     let another = ParentCreator(mydatabase);
     gsap.from(another, {
-        rotateY: '360deg',
+        rotateY: "360deg",
         scale: 0,
         duration: 1.3,
-        delay: 0.2
-    })
+        delay: 0.2,
+    });
 } while (false);

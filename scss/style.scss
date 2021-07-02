@@ -4,6 +4,20 @@
     box-sizing: border-box;
 }
 
+// fonts
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
+
+// mixing
+@mixin resp($width) {
+    @media only screen and (min-width: $width) {
+        @content;
+    }
+}
+
+:root {
+    font-family: "Roboto", sans-serif;
+}
+
 body {
     background-color: #0f0606;
 }
@@ -15,26 +29,25 @@ body {
     justify-items: center;
     text-align: center;
 }
-h4 {
-        font-family: Arial, Helvetica, sans-serif;
-        color: white;
-        font-weight: bold;
-        text-transform: capitalize;
-        position: absolute;
-    }
-    .description {
-        @extend h4;
-        width: 80%;
-        height: auto;
-        border-radius: 15px;
-        border: 2px solid white;
-        background-color: #484848;
-        position: initial;
-        padding: 25px 35px;
-    }
+p {
+    font-family: "Roboto", sans-serif;
+    color: white;
+    text-transform: capitalize;
+    // position: absolute;
+}
+.description {
+    @extend p;
+    width: 80%;
+    height: auto;
+    border-radius: 15px;
+    border: 2px solid white;
+    background-color: #484848;
+    position: initial;
+    padding: 25px 35px;
+}
 .container {
     width: 100vw;
-    height: 100vh;
+    min-height: 100vh;
     display: grid;
     justify-items: center;
     align-items: center;
@@ -44,14 +57,12 @@ h4 {
         align-self: center;
         justify-self: center;
         border-radius: 50%;
-        width: 220px;
-        height: 220px;
         display: grid;
         align-items: center;
         justify-items: center;
         position: relative;
         cursor: pointer;
-        // for animation 
+        // for animation
         z-index: 2000;
         img {
             width: 100%;
@@ -67,7 +78,7 @@ h4 {
             top: -7.8%;
             z-index: 100;
             left: -7.8%;
-            border: 6px solid #ffffff;
+            border: 5px solid #fff5d5;
             transform: rotate3d(1, 1, 1, 80deg);
             opacity: 0;
             transition: all 1s;
@@ -75,7 +86,7 @@ h4 {
         &.animate {
             &::after {
                 transform: rotate3d(1, 1, 1, 0deg);
-                opacity: 0.5;
+                opacity: 1;
             }
         }
     }
@@ -83,7 +94,7 @@ h4 {
     #main {
         // width: 49%;
         position: absolute;
-        left: 45%;
+        left: 28%;
         top: 40%;
         // item style
         .item {
@@ -98,16 +109,6 @@ h4 {
             }
         }
     }
-}
-
-// common item style
-.small {
-    width: 150px;
-    height: 150px;
-}
-.medium {
-    width: 180px;
-    height: 180px;
 }
 
 // keyframe animation
@@ -128,5 +129,210 @@ h4 {
     100% {
         transform: rotate3d(1, 1, 1, 80deg);
         opacity: 0;
+    }
+}
+
+// common item style
+.container {
+    #parent {
+        width: 90px;
+        height: 90px;
+        text-align: center;
+        &::after {
+            width: 110%;
+            height: 110%;
+            left: -8.5%;
+            top: -8.5%;
+        }
+        @include resp(400px) {
+            width: 100px;
+            height: 100px;
+            &::after {
+                left: -8.5%;
+                top: -7.8%;
+            }
+        }
+        @include resp(500px) {
+            width: 130px;
+            height: 130px;
+            &::after {
+                left: -7%;
+                top: -7%;
+            }
+        }
+        @include resp(610px) {
+            width: 170px;
+            height: 170px;
+            &::after {
+                left: -7%;
+                top: -7%;
+            }
+        }
+        @include resp(730px) {
+            width: 170px;
+            height: 170px;
+            &::after {
+                left: -7%;
+                top: -7%;
+            }
+        }
+        @include resp (850px) {
+            width: 235px;
+            height: 235px;
+            &::after {
+                left: -6.6%;
+                top: -6.6%;
+            }
+        }
+        @include resp(1000px) {
+            width: 245px;
+            height: 245px;
+            
+        }
+        @include resp (1200px) {
+            width: 280px;
+            height: 280px;
+            &::after {
+                left: -7%;
+                top: -7%;
+            }
+        }
+        @include resp (1400px) {
+            width: 310px;
+            height: 310px;
+            // &:: {
+
+            // }
+        }
+    }
+    #main {
+        left: 40%;
+        top: 45%;
+        @include resp(400px) {
+            left: 42%;
+            top: 43%;
+        }
+        @include resp(610px) {
+            left: 42.5%;
+            top: 42.5%;
+        }
+        @include resp(1000px) {
+            left: 41.5%;
+            top: 41.5%;
+        }
+        @include resp(1750px) {
+            left: 43.5%;
+            top: 43.5%;
+        } 
+    }
+}
+.small {
+    width: 40px;
+    height: 40px;
+    font-size: 7px;
+    line-height: 9px;
+    padding: 4px;
+    letter-spacing: 0.6px;
+    @include resp(500px) {
+        width: 55px;
+        height: 55px;
+        font-size: 7.5px;
+        line-height: 12px;
+        
+    }
+    @include resp(610px) {
+        width: 70px;
+        height: 70px;
+    }
+    @include resp (700px) {
+        font-size: 8.5px;
+        line-height: 13px;
+    }
+    @include resp(850px) {
+        width: 85px;
+        height: 85px;
+        font-size: 12px;
+        line-height: 15px;
+    }
+    @include resp(850px) {
+        width: 100px;
+        height: 100px;
+        font-size: 13px;
+        line-height: 17px;
+    }
+    @include resp (1200px) {
+        width: 110px;
+        height: 110px;
+        font-size: 14.5px;
+        line-height: 18px;
+    }
+    @include resp(1400px) {
+        width: 120px;
+        height: 120px;
+        font-size: 16px;
+        line-height: 20px;
+    }
+    @include resp (1750px) {
+        font-size: 18px;
+        line-height: 22px;
+    }
+}
+.medium {
+    width: 70px;
+    height: 70px;
+    font-size: 9px;
+    line-height: 12px;
+    @include resp(400px) {
+        width: 85px;
+        height: 85px;
+    }
+    @include resp(500px) {
+        width: 95px;
+        height: 95px;
+        padding: 3px;
+        font-size: 11px;
+        line-height: 16px;
+    }
+    @include resp(610px) {
+        width: 125px;
+        height: 125px;
+    }
+    @include resp(730px) {
+        width: 135px;
+        height: 135px;
+        p {
+            font-size: 12px;
+            line-height: 15px;
+        }
+    }
+    @include resp(850px) {
+        width: 160px;
+        height: 160px;
+        p {
+            font-size: 16px;
+            line-height: 20px;
+        }
+    }
+    @include resp(1000px) {
+        width: 180px;
+        height: 180px;
+        p {
+            font-size: 19px;
+            line-height: 23px;
+        }
+    }
+    @include resp (1400px) {
+        width: 220px;
+        height: 220px; 
+        p {
+            font-size: 22px;
+            line-height: 26px;
+        }
+    }
+    @include resp (1750px) {
+        p {
+            font-size: 25px;
+            line-height: 30px;
+        }
     }
 }
