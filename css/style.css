@@ -1,12 +1,23 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-:root {
-  font-family: "Roboto", sans-serif;
+@font-face {
+  font-family: "Regular";
+  src: url("../fonts/Roboto-Regular.ttf");
+}
+@font-face {
+  font-family: "Medium";
+  src: url("../fonts/Roboto-Medium.ttf");
+}
+p {
+  font-family: "Medium";
+}
+
+.description p {
+  font-family: "Regular";
 }
 
 body {
@@ -21,31 +32,37 @@ body {
   text-align: center;
 }
 
-p, .description {
-  font-family: "Roboto", sans-serif;
+p {
   color: white;
   text-transform: capitalize;
 }
 
-.description {
-  width: 80%;
-  height: auto;
-  border-radius: 15px;
-  border: 2px solid white;
-  background-color: #484848;
-  position: initial;
-  padding: 25px 35px;
-}
-
-.container {
+#main__wrapper {
+  background: url("../img/Background.jpg") no-repeat center center;
+  background-size: 100% 100%;
   width: 100vw;
   min-height: 100vh;
   display: grid;
-  justify-items: center;
   align-items: center;
-  background: url("../img/Background.jpg") no-repeat center center;
-  background-size: 100% 100%;
+  justify-items: center;
+  position: relative;
 }
+@media only screen and (min-width: 750px) {
+  #main__wrapper {
+    min-height: 700px;
+  }
+}
+@media only screen and (min-width: 900px) {
+  #main__wrapper {
+    min-height: 950px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  #main__wrapper {
+    min-height: 1200px;
+  }
+}
+
 .container #parent {
   align-self: center;
   justify-self: center;
@@ -56,6 +73,46 @@ p, .description {
   position: relative;
   cursor: pointer;
   z-index: 2000;
+}
+.container #parent p {
+  font-size: 10px;
+  line-height: 13px;
+}
+@media only screen and (min-width: 500px) {
+  .container #parent p {
+    font-size: 11.5px;
+    line-height: 14px;
+  }
+}
+@media only screen and (min-width: 730px) {
+  .container #parent p {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}
+@media only screen and (min-width: 850px) {
+  .container #parent p {
+    font-size: 16px;
+    line-height: 20px;
+  }
+}
+@media only screen and (min-width: 1000px) {
+  .container #parent p {
+    font-size: 19px;
+    line-height: 23px;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .container #parent p {
+    font-size: 22px;
+    line-height: 26px;
+  }
+}
+@media only screen and (min-width: 1750px) {
+  .container #parent p {
+    font-size: 25px;
+    line-height: 30px;
+  }
 }
 .container #parent img {
   width: 100%;
@@ -82,8 +139,6 @@ p, .description {
 }
 .container #main {
   position: absolute;
-  left: 28%;
-  top: 40%;
 }
 .container #main .item {
   border-radius: 50%;
@@ -115,16 +170,33 @@ p, .description {
     opacity: 0;
   }
 }
+.container {
+  display: grid;
+  justify-items: center;
+  align-items: center;
+  width: 320px;
+  height: 320px;
+}
+@media only screen and (min-width: 1880px) {
+  .container {
+    width: 400px;
+  }
+}
 .container #parent {
   width: 90px;
   height: 90px;
   text-align: center;
 }
+.container #parent p {
+  position: absolute;
+  text-align: center;
+  width: 50%;
+}
 .container #parent::after {
   width: 110%;
   height: 110%;
-  left: -8.5%;
-  top: -8.5%;
+  left: -10%;
+  top: -10%;
 }
 @media only screen and (min-width: 400px) {
   .container #parent {
@@ -142,8 +214,8 @@ p, .description {
     height: 130px;
   }
   .container #parent::after {
-    left: -7%;
-    top: -7%;
+    left: -9%;
+    top: -9%;
   }
 }
 @media only screen and (min-width: 610px) {
@@ -152,8 +224,8 @@ p, .description {
     height: 170px;
   }
   .container #parent::after {
-    left: -7%;
-    top: -7%;
+    left: -8.5%;
+    top: -8.5%;
   }
 }
 @media only screen and (min-width: 730px) {
@@ -198,9 +270,21 @@ p, .description {
     height: 310px;
   }
 }
+@media only screen and (min-width: 1750px) {
+  .container #parent {
+    width: 340px;
+    height: 340px;
+  }
+}
+@media only screen and (min-width: 1880px) {
+  .container #parent {
+    width: 405px;
+    height: 405px;
+  }
+}
 .container #main {
   left: 40%;
-  top: 45%;
+  top: 41.5%;
 }
 @media only screen and (min-width: 400px) {
   .container #main {
@@ -220,10 +304,22 @@ p, .description {
     top: 41.5%;
   }
 }
+@media only screen and (min-width: 1200px) {
+  .container #main {
+    left: 43%;
+    top: 43%;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .container #main {
+    left: 44%;
+    top: 41%;
+  }
+}
 @media only screen and (min-width: 1750px) {
   .container #main {
     left: 43.5%;
-    top: 43.5%;
+    top: 42.5%;
   }
 }
 
@@ -232,8 +328,10 @@ p, .description {
   height: 40px;
   font-size: 7px;
   line-height: 9px;
-  padding: 4px;
   letter-spacing: 0.6px;
+}
+.small p {
+  width: 70%;
 }
 @media only screen and (min-width: 500px) {
   .small {
@@ -291,6 +389,16 @@ p, .description {
   .small {
     font-size: 18px;
     line-height: 22px;
+    width: 130px;
+    height: 130px;
+  }
+}
+@media only screen and (min-width: 1880px) {
+  .small {
+    font-size: 20px;
+    line-height: 24px;
+    width: 135px;
+    height: 135px;
   }
 }
 
@@ -299,6 +407,9 @@ p, .description {
   height: 70px;
   font-size: 9px;
   line-height: 12px;
+}
+.medium p {
+  width: 70%;
 }
 @media only screen and (min-width: 400px) {
   .medium {
@@ -326,7 +437,7 @@ p, .description {
     width: 135px;
     height: 135px;
   }
-  .medium p, .medium .description {
+  .medium p {
     font-size: 12px;
     line-height: 15px;
   }
@@ -336,7 +447,7 @@ p, .description {
     width: 160px;
     height: 160px;
   }
-  .medium p, .medium .description {
+  .medium p {
     font-size: 16px;
     line-height: 20px;
   }
@@ -346,9 +457,19 @@ p, .description {
     width: 180px;
     height: 180px;
   }
-  .medium p, .medium .description {
+  .medium p {
     font-size: 19px;
     line-height: 23px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .medium {
+    width: 200px;
+    height: 200px;
+  }
+  .medium p {
+    font-size: 21.5px;
+    line-height: 24.5px;
   }
 }
 @media only screen and (min-width: 1400px) {
@@ -356,15 +477,81 @@ p, .description {
     width: 220px;
     height: 220px;
   }
-  .medium p, .medium .description {
+  .medium p {
     font-size: 22px;
     line-height: 26px;
   }
 }
 @media only screen and (min-width: 1750px) {
-  .medium p, .medium .description {
+  .medium p {
     font-size: 25px;
     line-height: 30px;
+  }
+}
+@media only screen and (min-width: 1880px) {
+  .medium {
+    width: 235px;
+    height: 235px;
+  }
+  .medium p {
+    font-size: 26px;
+    line-height: 32px;
+  }
+}
+
+.description {
+  width: 80%;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 1px;
+}
+@media only screen and (min-width: 550px) {
+  .description {
+    width: 100%;
+  }
+}
+.description p {
+  width: 115%;
+  text-align: center;
+  font-size: 10px;
+}
+@media only screen and (min-width: 600px) {
+  .description p {
+    font-size: 11px;
+  }
+}
+@media only screen and (min-width: 750px) {
+  .description p {
+    font-size: 12.5px;
+    margin-top: 100px;
+    line-height: 15px;
+    width: 140%;
+  }
+}
+@media only screen and (min-width: 950px) {
+  .description p {
+    font-size: 15px;
+    line-height: 22px;
+  }
+}
+@media only screen and (min-width: 1200px) {
+  .description p {
+    font-size: 18px;
+    line-height: 25px;
+    width: 150%;
+  }
+}
+@media only screen and (min-width: 1400px) {
+  .description p {
+    font-size: 20px;
+    line-height: 25px;
+  }
+}
+@media only screen and (min-width: 1750px) {
+  .description p {
+    font-size: 23px;
+    line-height: 28px;
+    width: 200%;
   }
 }
 

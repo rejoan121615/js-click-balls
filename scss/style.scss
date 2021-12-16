@@ -5,8 +5,14 @@
 }
 
 // fonts
-@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@500&display=swap");
-
+@font-face {
+    font-family: "Regular";
+    src: url("../fonts/Roboto-Regular.ttf");
+}
+@font-face {
+    font-family: "Medium";
+    src: url("../fonts/Roboto-Medium.ttf");
+}
 // mixing
 @mixin resp($width) {
     @media only screen and (min-width: $width) {
@@ -14,8 +20,12 @@
     }
 }
 
-:root {
-    font-family: "Roboto", sans-serif;
+p {
+    font-family: "Medium";
+}
+
+.description p {
+    font-family: "Regular";
 }
 
 body {
@@ -30,29 +40,30 @@ body {
     text-align: center;
 }
 p {
-    font-family: "Roboto", sans-serif;
     color: white;
     text-transform: capitalize;
     // position: absolute;
 }
-.description {
-    @extend p;
-    width: 80%;
-    height: auto;
-    border-radius: 15px;
-    border: 2px solid white;
-    background-color: #484848;
-    position: initial;
-    padding: 25px 35px;
-}
-.container {
+#main__wrapper {
+    background: url("../img/Background.jpg") no-repeat center center;
+    background-size: 100% 100%;
     width: 100vw;
     min-height: 100vh;
     display: grid;
-    justify-items: center;
     align-items: center;
-    background: url("../img/Background.jpg") no-repeat center center;
-    background-size: 100% 100%;
+    justify-items: center;
+    position: relative;
+    @include resp(750px) {
+        min-height: 700px;
+    }
+    @include resp(900px) {
+        min-height: 950px;
+    }
+    @include resp(1200px) {
+        min-height: 1200px;
+    }
+}
+.container {
     #parent {
         align-self: center;
         justify-self: center;
@@ -64,6 +75,34 @@ p {
         cursor: pointer;
         // for animation
         z-index: 2000;
+        p {
+            font-size: 10px;
+            line-height: 13px;
+            @include resp(500px) {
+                font-size: 11.5px;
+                line-height: 14px;
+            }
+            @include resp(730px) {
+                font-size: 12px;
+                line-height: 15px;
+            }
+            @include resp(850px) {
+                font-size: 16px;
+                line-height: 20px;
+            }
+            @include resp(1000px) {
+                font-size: 19px;
+                line-height: 23px;
+            }
+            @include resp(1400px) {
+                font-size: 22px;
+                line-height: 26px;
+            }
+            @include resp(1750px) {
+                font-size: 25px;
+                line-height: 30px;
+            }
+        }
         img {
             width: 100%;
             height: 100%;
@@ -78,7 +117,7 @@ p {
             top: -7.8%;
             z-index: 100;
             left: -7.8%;
-            border: 5px solid #fff5d5;
+            border: 2.5px solid #fff5d5;
             transform: rotate3d(1, 1, 1, 80deg);
             opacity: 0;
             transition: all 1s;
@@ -92,10 +131,7 @@ p {
     }
     // main style
     #main {
-        // width: 49%;
         position: absolute;
-        left: 28%;
-        top: 40%;
         // item style
         .item {
             border-radius: 50%;
@@ -134,15 +170,28 @@ p {
 
 // common item style
 .container {
+    display: grid;
+    justify-items: center;
+    align-items: center;
+    width: 320px;
+    height: 320px;
+    @include resp(1880px) {
+        width: 400px;
+    }
     #parent {
         width: 90px;
         height: 90px;
         text-align: center;
+        p {
+            position: absolute;
+            text-align: center;
+            width: 50%;
+        }
         &::after {
             width: 110%;
             height: 110%;
-            left: -8.5%;
-            top: -8.5%;
+            left: -10%;
+            top: -10%;
         }
         @include resp(400px) {
             width: 100px;
@@ -156,16 +205,16 @@ p {
             width: 130px;
             height: 130px;
             &::after {
-                left: -7%;
-                top: -7%;
+                left: -9%;
+                top: -9%;
             }
         }
         @include resp(610px) {
             width: 170px;
             height: 170px;
             &::after {
-                left: -7%;
-                top: -7%;
+                left: -8.5%;
+                top: -8.5%;
             }
         }
         @include resp(730px) {
@@ -174,9 +223,10 @@ p {
             &::after {
                 left: -7%;
                 top: -7%;
+                border-width: 5px;
             }
         }
-        @include resp (850px) {
+        @include resp(850px) {
             width: 235px;
             height: 235px;
             &::after {
@@ -187,9 +237,8 @@ p {
         @include resp(1000px) {
             width: 245px;
             height: 245px;
-            
         }
-        @include resp (1200px) {
+        @include resp(1200px) {
             width: 280px;
             height: 280px;
             &::after {
@@ -197,17 +246,22 @@ p {
                 top: -7%;
             }
         }
-        @include resp (1400px) {
+        @include resp(1400px) {
             width: 310px;
             height: 310px;
-            // &:: {
-
-            // }
+        }
+        @include resp(1750px) {
+            width: 340px;
+            height: 340px;
+        }
+        @include resp(1880px) {
+            width: 405px;
+            height: 405px;
         }
     }
     #main {
         left: 40%;
-        top: 45%;
+        top: 41.5%;
         @include resp(400px) {
             left: 42%;
             top: 43%;
@@ -220,10 +274,18 @@ p {
             left: 41.5%;
             top: 41.5%;
         }
+        @include resp(1200px) {
+            left: 43%;
+            top: 43%;
+        }
+        @include resp(1400px) {
+            left: 44%;
+            top: 41%;
+        }
         @include resp(1750px) {
             left: 43.5%;
-            top: 43.5%;
-        } 
+            top: 42.5%;
+        }
     }
 }
 .small {
@@ -231,20 +293,21 @@ p {
     height: 40px;
     font-size: 7px;
     line-height: 9px;
-    padding: 4px;
     letter-spacing: 0.6px;
+    p {
+        width: 70%;
+    }
     @include resp(500px) {
         width: 55px;
         height: 55px;
         font-size: 7.5px;
         line-height: 12px;
-        
     }
     @include resp(610px) {
         width: 70px;
         height: 70px;
     }
-    @include resp (700px) {
+    @include resp(700px) {
         font-size: 8.5px;
         line-height: 13px;
     }
@@ -260,7 +323,7 @@ p {
         font-size: 13px;
         line-height: 17px;
     }
-    @include resp (1200px) {
+    @include resp(1200px) {
         width: 110px;
         height: 110px;
         font-size: 14.5px;
@@ -272,9 +335,17 @@ p {
         font-size: 16px;
         line-height: 20px;
     }
-    @include resp (1750px) {
+    @include resp(1750px) {
         font-size: 18px;
         line-height: 22px;
+        width: 130px;
+        height: 130px;
+    }
+    @include resp(1880px) {
+        font-size: 20px;
+        line-height: 24px;
+        width: 135px;
+        height: 135px;
     }
 }
 .medium {
@@ -282,6 +353,9 @@ p {
     height: 70px;
     font-size: 9px;
     line-height: 12px;
+    p {
+        width: 70%;
+    }
     @include resp(400px) {
         width: 85px;
         height: 85px;
@@ -321,18 +395,77 @@ p {
             line-height: 23px;
         }
     }
-    @include resp (1400px) {
+    @include resp(1200px) {
+        width: 200px;
+        height: 200px;
+        p {
+            font-size: 21.5px;
+            line-height: 24.5px;
+        }
+    }
+    @include resp(1400px) {
         width: 220px;
-        height: 220px; 
+        height: 220px;
         p {
             font-size: 22px;
             line-height: 26px;
         }
     }
-    @include resp (1750px) {
+    @include resp(1750px) {
         p {
             font-size: 25px;
             line-height: 30px;
+        }
+    }
+    @include resp(1880px) {
+        width: 235px;
+        height: 235px;
+        p {
+            font-size: 26px;
+            line-height: 32px;
+        }
+    }
+}
+
+// description a
+.description {
+    width: 80%;
+    margin-left: auto;
+    margin-right: auto;
+    letter-spacing: 1px;
+    @include resp(550px) {  
+        width: 100%;
+    }
+    p {
+        width: 115%;
+        text-align: center;
+        font-size: 10px;
+        @include resp(600px) {
+            font-size: 11px;
+        }
+        @include resp(750px) {
+            font-size: 12.5px;
+            margin-top: 100px;
+            line-height: 15px;
+            width: 140%;
+        }
+        @include resp(950px) {
+            font-size: 15px;
+            line-height: 22px;
+        }
+        @include resp(1200px) {
+            font-size: 18px;
+            line-height: 25px;
+            width: 150%;
+        }
+        @include resp(1400px) {
+            font-size: 20px;
+            line-height: 25px;
+        }
+        @include resp(1750px) {
+            font-size: 23px;
+            line-height: 28px;
+            width: 200%;
         }
     }
 }

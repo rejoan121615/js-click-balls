@@ -35,7 +35,7 @@ export const dynamicObjectData = [
                     {
                         type: "text",
                         expanded: false,
-                        size: "small",
+                        size: "medium",
                         text: "orks implementation",
                         img: "./img/BallHoverState.png",
                         hoverImg: "./img/BallHoverStatev2.png",

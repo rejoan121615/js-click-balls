@@ -310,12 +310,14 @@ const regularParentGenerator = (data) => {
 function calculateWidth() {
     var circle = window.innerWidth;
     var width = 100;
-    if (circle > 1750) {
+    if (circle > 1880) {
+        width = 465;
+    } else if (circle > 1750) {
         width = 430;
     } else if (circle > 1400) {
         width = 400;
     } else if (circle > 1200) {
-        width = 350;
+        width = 340;
     } else if (circle > 1000) {
         width = 310;
     } else if (circle > 850) {
