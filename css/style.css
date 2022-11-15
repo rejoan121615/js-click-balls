@@ -128,7 +128,7 @@ p {
   top: -7.8%;
   z-index: 100;
   left: -7.8%;
-  border: 5px solid #fff5d5;
+  border: 2.5px solid #fff5d5;
   transform: rotate3d(1, 1, 1, 80deg);
   opacity: 0;
   transition: all 1s;
@@ -180,6 +180,7 @@ p {
 @media only screen and (min-width: 1880px) {
   .container {
     width: 400px;
+    height: 400px;
   }
 }
 .container #parent {
@@ -236,6 +237,7 @@ p {
   .container #parent::after {
     left: -7%;
     top: -7%;
+    border-width: 5px;
   }
 }
 @media only screen and (min-width: 850px) {

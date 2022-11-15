@@ -177,6 +177,7 @@ p {
     height: 320px;
     @include resp(1880px) {
         width: 400px;
+        height: 400px;
     }
     #parent {
         width: 90px;
